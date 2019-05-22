@@ -4,6 +4,9 @@ import java.io.*;
 import java.math.*;
 import java.security.*;
 import java.text.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
@@ -25,15 +28,35 @@ class Result {
 
     public static List<String> reformatDate(List<String> dates) {
         // Write your code here
-
+        List<String> list = new ArrayList<>();
+        dates.stream().forEach(a-> list.add(reformat(a)));
+        return list;
     }
 
+    public static String reformat(String item) {
+        try {
+            String[] separatedDate = item.split(" ");
+            int day = Integer.parseInt(separatedDate[0].replaceAll("\\D+", ""));
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd");
+            String dateInString = String.format("%s-%s-%s", separatedDate[2], separatedDate[1], day);
+
+            Date date = formatter.parse(dateInString);
+
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String result = formatter.format(date);
+            System.out.println(result);
+            return result;
+        } catch (Exception ex) {
+            return "";
+        }
+    }
 }
 
 public class Solution {
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("d:\\aa\\a.txt"));
 
         int datesCount = Integer.parseInt(bufferedReader.readLine().trim());
 
